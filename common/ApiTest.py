@@ -13,8 +13,8 @@ import ast
 host = ''
 class ApiTest():
     global token
-    def __init__(self):
-        pass
+
+
     def test(self):
         R1 = Read()
         global host
