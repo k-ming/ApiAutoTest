@@ -10,6 +10,7 @@
 import unittest
 from ddt import ddt, data, unpack
 from common.readXlsx import ReadXlsx
+
 @ddt
 class Deamo(unittest.TestCase):
 
@@ -33,11 +34,12 @@ class Deamo(unittest.TestCase):
     #     print(name, age, sex)
 
     d = ReadXlsx().read('Sheet1')
+
     @data(*d)
     @unpack
     def test_large(self,value1, value2, value3, value4, value5):
-        if (value3 == 'post'):
-            print(value1, value2, value3, value4, value5)
+        if value3 == 'post':
+            print(value1+value2, value4, value5)
 
 
 if __name__ == '__main__':

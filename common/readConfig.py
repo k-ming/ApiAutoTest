@@ -41,6 +41,6 @@ class Read():
         return s
 
 
-# if __name__ == '__main__':
-#     R1 = Read()
-#     print(R1.getApi('INFO', 'headers'))
+if __name__ == '__main__':
+    R1 = Read()
+    print (R1.getApi('INFO', 'headers'))

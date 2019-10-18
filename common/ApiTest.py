@@ -7,7 +7,7 @@
 7  # Date:         2019/9/18
 8  #------------------------------------
 from common.readConfig import Read
-from common.request import Connect
+from common import request
 import ast
 
 host = ''
@@ -24,15 +24,18 @@ class ApiTest():
         params = R1.getApi('INFO', 'params')
         headers = R1.getApi('INFO', 'headers')
 
-        C1 = Connect()
         for i in range(0, len(paths)):
             # 此处必须取出来的参数转化为dict
             data = ast.literal_eval(params[i])
             header = ast.literal_eval(headers[i])
             if methods[i] == 'get':
-                C1.get(str(host[0])+paths[i], data, header)
+                request.get(str(host[0])+paths[i], data, header)
             elif methods[i] == 'post':
-                C1.post(str(host[0])+paths[i], data, header)
+                print(type(host[0]+paths[i]))
+                print(type(data))
+                print(type(header))
+
+                request.post(str(host[0])+paths[i], data, header)
             else: pass
 
 

@@ -16,7 +16,6 @@ class ReadXlsx():
     def read(self,sheet):
         data = []
         file  = xlrd.open_workbook('../cases/apidata.xlsx')
-        print(file)
         table =  file.sheet_by_name(sheet)
         if (table.nrows > 1):
             for i in range(1, table.nrows):
