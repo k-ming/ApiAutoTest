@@ -8,7 +8,7 @@
 8  # ------------------------------------
 
 import requests, json
-
+from common import writeXlsx
 def get(url, headers, params):
     r = requests.get(url, headers=headers, params=params)
     # print(json.loads(r.text).get('flag'))
@@ -22,6 +22,6 @@ def post(url, headers, params):
     return r
     r.close()
 
-if __name__ == '__main__':
+# if __name__ == '__main__':
     # post('http://api.robot.aiyunshen.com/robot/login/userLogin', {'Accept': 'application/json, text/plain, */*'}, {'userName':'admin', 'password':'admin123456'})
-    get('http://52.80.169.157:8090/ask', '', {'q':'带我去梦境','mall_code':'1000000001'})
+    # get('http://52.80.169.157:8090/ask', '', {'q':'带我去梦境','mall_code':'1000000001'})

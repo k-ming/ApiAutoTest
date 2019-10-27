@@ -10,8 +10,9 @@
 import unittest
 from ddt import ddt, data, unpack
 from common.readXlsx import ReadXlsx
-from common import request
+from common import request, writeXlsx
 import ast, json
+import datetime as d
 
 
 @ddt
@@ -20,7 +21,10 @@ class Run(unittest.TestCase):
 
     @data(*d)
     @unpack
-    def test_run(self, value1, value2, value3, value4, value5, value6, value7, value8):
+    def test_run(self, value1, value2, value3, value4, value5, value6, value7, value8, value9):
+        currentTime = d.datetime.now().strftime("%Y.%m.%d-%H:%M:%S")
+        writeXlsx.writeBook('report', '机器人接口自动化测试报告', currentTime)
+
         """  headers 和 parameters 必须使用 ast.literal_eval(value)函数转化为dict才能使用，为空的时候转化会报错，所以要做判断
         :param value1: title
         :param value2: host
@@ -46,18 +50,23 @@ class Run(unittest.TestCase):
         '''
         判断请求方法
         '''
-        if value4 == 'get':
-            r = request.get(value2 + value3, value5, value6)
-            # print(type(value5), type(value6))
-            self.assertEqual(int(value7), eval(value8))
-        elif value4 == 'post':
+        if value4 == 'post':
             r = request.post(value2 + value3, value5, value6)
-            # print(type(value5), type(value6))
-            self.assertEqual(int(value7), eval(value8))
+            if self.assertEqual(int(value7), eval(value8)):
+                result = 'fail'
+            else:
+                result = 'pass'
+            writeXlsx.writeContent('report', int(value9) + 4, value1, r.text, value7, result)
+        elif value4 == 'get':
+            r = request.get(value2 + value3, value5, value6)
+            if self.assertEqual(int(value7), eval(value8)):
+                result = 'fail'
+            else:
+                result = 'pass1'
+            writeXlsx.writeContent('report', int(value9)+4, value1, r.text, value7, result)
         else:
             pass
 
-
-
 if __name__ == '__main__':
-    unittest.main(verbosity=2)
+    unittest.main(verbosity=1)
+
