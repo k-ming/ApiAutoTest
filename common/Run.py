@@ -14,6 +14,9 @@ from common import request, writeXlsx
 import ast, json
 import datetime as dt
 
+total = 0
+success = 0
+failure = 0
 
 @ddt
 class Run(unittest.TestCase):
@@ -31,6 +34,7 @@ class Run(unittest.TestCase):
         :param value6: parameters
         :param value7: expect
         """
+
         '''
         将参数转化为字典时，需要加判断，如果不为空在转化，否则会抛出异常
         '''
@@ -45,25 +49,36 @@ class Run(unittest.TestCase):
             pass
 
         '''
-        判断请求方法
+        判断请求方法,统计用例执行情况
         '''
+        global total
+        global success
+        global failure
         if value4 == 'post':
             r = request.post(value2 + value3, value5, value6)
-            if self.assertEqual(int(value7), eval(value8)):
-                result = 'fail'
-            else:
+            total = total+1
+            try:
+                self.assertEqual(int(value7), eval(value8))
                 result = 'pass'
-            writeXlsx.writeContent('../reports/report', int(value9)+4, value1, r.text, value7, result)
+                success = success + 1
+            except AssertionError as e:
+                result = 'fail'
+                failure = failure + 1
+            writeXlsx.writeContent('../reports/report', int(value9)+4, value1, r.text, value7, result, total, success, failure)
         elif value4 == 'get':
             r = request.get(value2 + value3, value5, value6)
-            if self.assertEqual(int(value7), eval(value8)):
-                result = 'fail'
-            else:
+            total = total + 1
+            try:
+                self.assertEqual(int(value7), eval(value8), msg='校验未通过')
                 result = 'pass'
-            writeXlsx.writeContent('../reports/report', int(value9)+4, value1, r.text, value7, result)
+                success = success + 1
+            except AssertionError as e:
+                result = 'fail'
+                failure = failure + 1
+            writeXlsx.writeContent('../reports/report', int(value9)+4, value1, r.text, value7, result,total, success, failure)
         else:
             pass
-
+        print(total, success, failure)
 
 if __name__ == '__main__':
     ''' writeXlsx.writeBook()方法须在此处调用，才能首次创建文件

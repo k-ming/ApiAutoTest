@@ -53,6 +53,8 @@ style4 = xlwt.easyxf('''
        pattern:
            pattern solid,
            fore-colour 0x0A;
+        align:
+            vert center;
    ''')
 
 # 创建字段名 style
@@ -112,25 +114,36 @@ def writeBook(bookName, title, time):
     workbook.save(bookName + '.xls')
 
 
-def writeContent(bookName, num, apiName, response, expect, status):
+def writeContent(bookName, num, apiName, response, expect, status, total, success, failure):
     rbook = xlrd.open_workbook(bookName+'.xls', formatting_info=True)  # 打开文件，并且保留原格式
     workbook = copy(rbook)  # 使用xlutils的copy方法使用打开的excel文档创建一个副本
     sheet = workbook.get_sheet(0)  # 使用get_sheet方法获取副本要操作的sheet
+    '''写入接口请求情况
+    '''
     sheet.write_merge(num, num, 0, 1)
     sheet.write(num, 0, apiName)
     sheet.write_merge(num, num, 2, 3)
     sheet.write(num, 2, response)
     sheet.write_merge(num, num, 4, 5)
     sheet.write(num, 4, expect)
+
+    ''' 根据请求结果，设置单元格颜色
+    '''
     if status == 'pass':
         sheet.write(num, 6, status)
     elif status == 'fail':
         sheet.write(num, 6, status, style4)
     else:
         sheet.write(num, 6, status, style4)
-    sheet.row(num).set_style(xlwt.easyxf('font:height 350'))
+    sheet.row(num).set_style(xlwt.easyxf('font:height 350'))  # 设置结果单元的行高
+
+    ''' 写入用例执行总数，成功，失败的条数
+    '''
+    sheet.write(3, 1, total, style2)
+    sheet.write(3, 3, success, style3)
+    sheet.write(3, 5, failure, style4)
     workbook.save(bookName + '.xls')
 
-# # if __name__ == '__main__':
-#     writeBook('report', '机器人接口自动化测试报告', '\'2019-10-26 16:58:20')
-#     writeContent('report', 6, '管理员登陆失败', '{"status":403007,"message":"密码不正确","timestamp":1572178740846}', 403007.0, 'pass')
+# if __name__ == '__main__':
+    # writeBook('report', '机器人接口自动化测试报告', '\'2019-10-26 16:58:20')
+    # writeContent('report', 6, '管理员登陆失败', '{"status":403007,"message":"密码不正确","timestamp":1572178740846}', 403007.0, 'pass',1,1,0)
