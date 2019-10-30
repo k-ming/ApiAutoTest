@@ -17,6 +17,7 @@ import datetime as dt
 total = 0
 success = 0
 failure = 0
+e = ''
 
 @ddt
 class Run(unittest.TestCase):
@@ -54,31 +55,33 @@ class Run(unittest.TestCase):
         global total
         global success
         global failure
+
         if value4 == 'post':
             r = request.post(value2 + value3, value5, value6)
             total = total+1
             try:
-                self.assertEqual(int(value7), eval(value8))
+                self.assertEqual(int(value7), eval(value8), msg='校验失败！')
                 result = 'pass'
                 success = success + 1
+                writeXlsx.writeContent('../reports/report', int(value9)+4, value1, '', value7, result, total, success, failure)
             except AssertionError as e:
                 result = 'fail'
                 failure = failure + 1
-            writeXlsx.writeContent('../reports/report', int(value9)+4, value1, r.text, value7, result, total, success, failure)
+                writeXlsx.writeContent('../reports/report', int(value9)+4, value1, str(e), value7, result, total, success, failure)
         elif value4 == 'get':
             r = request.get(value2 + value3, value5, value6)
             total = total + 1
             try:
-                self.assertEqual(int(value7), eval(value8), msg='校验未通过')
+                self.assertEqual(int(value7), eval(value8), msg='校验失败！')
                 result = 'pass'
                 success = success + 1
+                writeXlsx.writeContent('../reports/report', int(value9)+4, value1, '', value7, result,total, success, failure)
             except AssertionError as e:
                 result = 'fail'
                 failure = failure + 1
-            writeXlsx.writeContent('../reports/report', int(value9)+4, value1, r.text, value7, result,total, success, failure)
+                writeXlsx.writeContent('../reports/report', int(value9)+4, value1, str(e), value7, result,total, success, failure)
         else:
             pass
-        print(total, success, failure)
 
 if __name__ == '__main__':
     ''' writeXlsx.writeBook()方法须在此处调用，才能首次创建文件
