@@ -4,7 +4,7 @@ python 接口自动化 ddt数据驱动
 ## 目录说明
 ### `case`  测试用例目录  
 #### xls格式的测试用例
-![用例模板apidata.xlsx](http://b-ssl.duitang.com/uploads/item/201604/14/20160414132207_5Fvjs.jpeg)
+![用例模板apidata.xlsx](https://github.com/ming-zh/ApiAutoTest/tree/dev/images/caseModel.png)
 ### `common`    脚本目录  
     color.txt   单元格颜色码  
     configRW.py 读写.ini文件  
@@ -13,9 +13,9 @@ python 接口自动化 ddt数据驱动
     Run.py  运行测试用例  
     writeXlsx   写.xls文件  
 ### `config`  配置文件目录  
-![配置文件模板defaul.ini]()
+![配置文件模板defaul.ini](https://github.com/ming-zh/ApiAutoTest/tree/dev/images/default.png)
 ### `report`    测试报告目录
-![测试报告模板report-2019-11-05-1.xls]()
+![测试报告模板report-2019-11-05-1.xls]((https://github.com/ming-zh/ApiAutoTest/tree/dev/images/report.png))
 ## 脚本说明
 `request.py`  
 ```python  
