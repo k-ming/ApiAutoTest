@@ -3,12 +3,11 @@
 3  # ------------------------------------
 4  # Name:         request
 5  # Description:  
-6  # Author:       17621158197
+6  # Author:       lenvo
 7  # Date:         2019/9/10
 8  # ------------------------------------
-
 import requests, json
-from common import writeXlsx
+
 def get(url, headers, params):
     r = requests.get(url, headers=headers, params=params)
     # print(json.loads(r.text).get('flag'))

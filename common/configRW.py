@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-#
 2
 3  #------------------------------------
-4  # Name:         self.configRW
+4  # Name:         configRW
 5  # Description:
-6  # Author:       17621158197
+6  # Author:       lenvo
 7  # Date:         2019/11/1
 8  #------------------------------------
 

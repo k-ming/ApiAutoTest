@@ -3,13 +3,11 @@
 3  #------------------------------------
 4  # Name:         readXslx
 5  # Description:  
-6  # Author:       17621158197
+6  # Author:       lenvo
 7  # Date:         2019/10/17
 8  #------------------------------------
 
 import xlrd
-
-
 
 class ReadXlsx():
 
