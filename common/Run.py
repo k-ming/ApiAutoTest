@@ -13,11 +13,15 @@ from common.readXlsx import ReadXlsx
 from common import request, writeXlsx
 import ast, json
 import datetime as dt
+from common.configRW import DefaultCfg
+
 
 total = 0
 success = 0
 failure = 0
 e = ''
+
+
 
 @ddt
 class Run(unittest.TestCase):
@@ -35,7 +39,6 @@ class Run(unittest.TestCase):
         :param value6: parameters
         :param value7: expect
         """
-
         '''
         将参数转化为字典时，需要加判断，如果不为空在转化，否则会抛出异常
         '''
@@ -63,11 +66,11 @@ class Run(unittest.TestCase):
                 self.assertEqual(int(value7), eval(value8), msg='校验失败！')
                 result = 'pass'
                 success = success + 1
-                writeXlsx.writeContent('../reports/report', int(value9)+4, value1, '', value7, result, total, success, failure)
+                writeXlsx.writeContent('../reports/report-' + today + '-' + D1.getKeyVal('build', today), int(value9)+4, value1, '', value7, result, total, success, failure)
             except AssertionError as e:
                 result = 'fail'
                 failure = failure + 1
-                writeXlsx.writeContent('../reports/report', int(value9)+4, value1, str(e), value7, result, total, success, failure)
+                writeXlsx.writeContent('../reports/report-' + today + '-' + D1.getKeyVal('build', today), int(value9)+4, value1, str(e), value7, result, total, success, failure)
         elif value4 == 'get':
             r = request.get(value2 + value3, value5, value6)
             total = total + 1
@@ -75,11 +78,11 @@ class Run(unittest.TestCase):
                 self.assertEqual(int(value7), eval(value8), msg='校验失败！')
                 result = 'pass'
                 success = success + 1
-                writeXlsx.writeContent('../reports/report', int(value9)+4, value1, '', value7, result,total, success, failure)
+                writeXlsx.writeContent('../reports/report-' + today + '-' + D1.getKeyVal('build', today), int(value9)+4, value1, '', value7, result,total, success, failure)
             except AssertionError as e:
                 result = 'fail'
                 failure = failure + 1
-                writeXlsx.writeContent('../reports/report', int(value9)+4, value1, str(e), value7, result,total, success, failure)
+                writeXlsx.writeContent('../reports/report-' + today + '-' + D1.getKeyVal('build', today), int(value9)+4, value1, str(e), value7, result,total, success, failure)
         else:
             pass
 
@@ -87,6 +90,19 @@ if __name__ == '__main__':
     ''' writeXlsx.writeBook()方法须在此处调用，才能首次创建文件
     '''
     currentTime = dt.datetime.now().strftime("%Y.%m.%d-%H:%M:%S")
-    writeXlsx.writeBook('../reports/report', '机器人接口自动化测试报告', currentTime)
+
+    today = dt.datetime.now().strftime('%Y-%m-%d')
+    D1 = DefaultCfg()
+    if D1.hasSection('build'):
+        if D1.hasKey('build', today):
+            tv = D1.getKeyVal('build', today)
+            D1.addKeyVal('build', today, str(int(tv) + 1))
+        else:
+            D1.addKeyVal('build', today, '1')
+    else:
+        D1.addSection('build')
+        D1.addKeyVal('build', today, '1')
+
+    writeXlsx.writeBook('../reports/report-' + today + '-' + D1.getKeyVal('build', today), '机器人接口自动化测试报告', currentTime)
     unittest.main(verbosity=1)
 
